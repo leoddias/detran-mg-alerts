@@ -1,4 +1,4 @@
-import time
+import time, sys
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -28,13 +28,20 @@ def init_browser(headless):
         return browser
 
 def main():
+    if len(sys.argv) < 3:
+        print("Usage: main.py PLACA RENAVAM")
+        exit(-1)
+    
+    placa = sys.argv[1]
+    renavam = sys.argv[2]
+
     #browser = init_browser(True)
     #consulta_multas = ConsultaMulta(browser)
-    #consulta_multas.consultar_selenium(placa='XXXX', renavam='XXXX')
+    #consulta_multas.consultar_selenium(placa=placa, renavam=renavam)
     #browser.quit()
 
     consulta_multas = ConsultaMulta(None)
-    consulta_multas.consultar(placa='XXXX', renavam='XXXX')
+    consulta_multas.consultar(placa=placa, renavam=renavam)
 
 if __name__ == "__main__":
     main()

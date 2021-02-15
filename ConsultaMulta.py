@@ -11,8 +11,8 @@ class ConsultaMulta:
         self.get_url = 'https://www.detran.mg.gov.br/veiculos/situacao-do-veiculo/emitir-de-extrato-de-multas'
         self.post_url = 'https://www.detran.mg.gov.br/veiculos/situacao-do-veiculo/emitir-de-extrato-de-multas/listar-infracoes-multas'
 
-    def __send_alert(self, current_url, page_source, placa, is_selenium=False):
-        if current_url == self.post_url:
+    def __send_alert(self, page_source, placa, is_selenium=False):
+        if search('Voltar', page_source):
             print("Possui Multas !")
             if is_selenium:
                self.browser.save_screenshot(f"PLACA_{placa}-{self.time_now}.png")
@@ -28,11 +28,10 @@ class ConsultaMulta:
         self.browser.find_element_by_xpath('//*[@id="renavam"]').send_keys(renavam)
         self.browser.find_element_by_xpath('//*[@id="content"]/form/button').click()
 
-        self.__send_alert(self.browser.current_url, self.browser.page_source, placa, True)
+        self.__send_alert(self.browser.page_source, placa, True)
 
     def consultar(self, placa, renavam):
         with requests.Session() as session:
-    
             response = session.get(self.get_url)
 
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -54,4 +53,4 @@ class ConsultaMulta:
 
             response = session.post(self.post_url, data=payload)
 
-            self.__send_alert(response.url, response.text, placa)
+            self.__send_alert(response.text, placa)
