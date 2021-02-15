@@ -11,24 +11,24 @@ class ConsultaMulta:
         self.get_url = 'https://www.detran.mg.gov.br/veiculos/situacao-do-veiculo/emitir-de-extrato-de-multas'
         self.post_url = 'https://www.detran.mg.gov.br/veiculos/situacao-do-veiculo/emitir-de-extrato-de-multas/listar-infracoes-multas'
 
-    def __send_alert(self, page_source, placa, is_selenium=False):
-        if search('Multas Vencidas', page_source):
-            print("Possui Multas Vencidas!")
+    def __send_alert(self, current_url, page_source, placa, is_selenium=False):
+        if current_url == self.post_url:
+            print("Possui Multas !")
             if is_selenium:
                self.browser.save_screenshot(f"PLACA_{placa}-{self.time_now}.png")
         elif search('PLACA NAO POSSUI INFRACOES', page_source):
             print("Não Possui Multas !")
         else:
-            print("Erro: Não foi possivel consultar")        
+            print("Erro: Não foi possivel consultar")
 
     def consultar_selenium(self, placa, renavam):
-        self.browser.get(self.get_url)    
+        self.browser.get(self.get_url)
 
         self.browser.find_element_by_xpath('//*[@id="placa"]').send_keys(placa)
         self.browser.find_element_by_xpath('//*[@id="renavam"]').send_keys(renavam)
         self.browser.find_element_by_xpath('//*[@id="content"]/form/button').click()
 
-        self.__send_alert(self.browser.page_source, placa, True)        
+        self.__send_alert(self.browser.current_url, self.browser.page_source, placa, True)
 
     def consultar(self, placa, renavam):
         with requests.Session() as session:
@@ -54,4 +54,4 @@ class ConsultaMulta:
 
             response = session.post(self.post_url, data=payload)
 
-            self.__send_alert(response.text, placa)
+            self.__send_alert(response.url, response.text, placa)
