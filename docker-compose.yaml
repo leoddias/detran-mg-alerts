@@ -1,0 +1,8 @@
+version: "3.6"
+services:
+  consulta-multa:
+    image: consulta-multa
+    restart: unless-stopped
+    build: ./
+    env_file:
+      - .env

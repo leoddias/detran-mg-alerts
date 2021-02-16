@@ -1,4 +1,4 @@
-import time, sys
+import time, sys, os
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -32,8 +32,8 @@ def main():
         print("Usage: main.py PLACA RENAVAM")
         exit(-1)
     
-    placa = sys.argv[1]
-    renavam = sys.argv[2]
+    placa = os.getenv('PLACA', sys.argv[1])
+    renavam = os.getenv('RENAVAM', sys.argv[2])
 
     #browser = init_browser(True)
     #consulta_multas = ConsultaMulta(browser)
