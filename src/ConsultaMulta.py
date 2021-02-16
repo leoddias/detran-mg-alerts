@@ -4,6 +4,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
+from SendEmail import SendEmail
+
 class ConsultaMulta:
     def __init__(self, browser):
         self.browser = browser
@@ -13,13 +15,20 @@ class ConsultaMulta:
 
     def __send_alert(self, page_source, placa, is_selenium=False):
         if search('Voltar', page_source):
-            print("Possui Multas !")
+            print(f"Placa {placa} possui multas !")
+            
+            SendEmail().send_email(
+                subject = '[ALERTA] DETRAN-MG: VOCÊ POSSUI MULTAS !', 
+                content = f"A placa {placa} possui multas, para regularizar favor acessar {self.get_url}"
+            )
+
             if is_selenium:
                self.browser.save_screenshot(f"PLACA_{placa}-{self.time_now}.png")
         elif search('PLACA NAO POSSUI INFRACOES', page_source):
-            print("Não Possui Multas !")
+            print(f"A placa {placa} não possui multas !")
+
         else:
-            print("Erro: Não foi possivel consultar")
+            print(f"ERROR: Não foi possivel consultar a placa: {placa}")
 
     def consultar_selenium(self, placa, renavam):
         self.browser.get(self.get_url)

@@ -1,5 +1,10 @@
 # detran-mg-alerts
 
+## Requisitos
+- [Criar Api Key no SendGrid](https://app.sendgrid.com/settings/api_keys)
+- [Configurar TimeZone no SendGrid](https://app.sendgrid.com/account/details)
+- Exportar variaveis de ambiente do .env_example
+
 ## Como executar - Docker
 - Necessário: docker & docker-compose
 - Criar um arquivo .env (baseado em .env_example)
