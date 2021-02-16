@@ -11,7 +11,7 @@ RUN cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 RUN echo "America/Sao_Paulo" > /etc/timezone
 RUN apk del tzdata
 
-RUN echo '*  13  *  *  *    python /usr/src/app/main.py placa renavam' >> /etc/crontabs/root
+RUN echo '0  13  *  *  *    python /usr/src/app/main.py placa renavam' >> /etc/crontabs/root
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
